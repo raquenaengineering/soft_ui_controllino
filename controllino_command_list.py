@@ -11,7 +11,7 @@ To be able to synchronize easily any changes in the communication between the co
 ui side: controllino_command_list.py
     - class with a lot of variables?
         - probably best option
-firmware side: command_list.cpp
+firmware side: command_list.h
     - defines
     - const chars? --> probably this option better.
 """
@@ -19,24 +19,22 @@ firmware side: command_list.cpp
 class controllino_command_list():
 
 
-    pin_d0_hi_cmd = b'+'
-    pin_d0_lo_cmd = b'*'
+    cmd_pin_d0_on = b'+'
+    cmd_pin_d0_off = b'*'
 
-    pin_d1_hi_cmd = b'1'
-    pin_d1_lo_cmd = b'!'
+    cmd_pin_d1_on = b'1'
+    cmd_pin_d1_off = b'!'
 
-    pin_d2_hi_cmd = b'2'
-    pin_d2_lo_cmd = b'"'
+    cmd_pin_d2_on = b'2'
+    cmd_pin_d2_off = b'"'
 
-    pin_d3_hi_cmd = b'3'
-    pin_d3_lo_cmd = b'-'            # problematic, not an ASCII character.
-
-
+    cmd_pin_d3_on = b'3'
+    cmd_pin_d3_off = b'-'            # problematic, not an ASCII character.
 
 
+    # ANALOG INPUTS #
 
-
-    request_inputs_cmd = '-'
+    cmd_request_analog_inputs = '-'
 
     def __init__(self):             # not needed, this class is just a variable container.
         pass
