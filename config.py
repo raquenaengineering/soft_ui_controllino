@@ -1,6 +1,6 @@
 
 class ui_config():
-    update_period = 1000                    # period in ms in which the ui is updated / INDEPENDENT ON UPDATES OF THE CONTROLLINO CLASS!!!
+    update_period = 500                    # period in ms in which the ui is updated / INDEPENDENT ON UPDATES OF THE CONTROLLINO CLASS!!!
 
 
 class serial_config():

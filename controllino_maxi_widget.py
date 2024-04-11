@@ -324,11 +324,94 @@ class controllino_maxi_widget(QWidget):
 		self.img_controllino = controllino_maxi_image_with_buttons()
 		self.layout_control.addWidget(self.img_controllino)
 
+
+
+
+		# signal connection #
+		self.connect_digital_buttons_signals()
+
+
+
 		# timers #
 		self.timer_update_ui = QTimer()
 		self.timer_update_ui.setInterval(config.ui_config.update_period)				# interval set  via config file
 		self.timer_update_ui.timeout.connect(self.on_timer_update_ui)
 		self.timer_update_ui.start()
+
+
+	def connect_digital_buttons_signals(self):
+		# digital on/off 0-3
+		self.digital_outputs.pin_d0.button_on.clicked.connect(lambda: self.controllino.set_digital_output(pin = 0, val = True))				# NOTE: required to use a lambda in case the method we are calling requires input parameters !
+		self.digital_outputs.pin_d0.button_off.clicked.connect(lambda: self.controllino.set_digital_output(pin = 0, val = False))
+
+		self.digital_outputs.pin_d1.button_on.clicked.connect(lambda: self.controllino.set_digital_output(pin = 1, val = True))
+		self.digital_outputs.pin_d1.button_off.clicked.connect(lambda: self.controllino.set_digital_output(pin = 1, val = False))
+
+		self.digital_outputs.pin_d2.button_on.clicked.connect(lambda: self.controllino.set_digital_output(pin = 2, val = True))
+		self.digital_outputs.pin_d2.button_off.clicked.connect(lambda: self.controllino.set_digital_output(pin = 2, val = False))
+
+		self.digital_outputs.pin_d3.button_on.clicked.connect(lambda: self.controllino.set_digital_output(pin = 3, val = True))
+		self.digital_outputs.pin_d3.button_off.clicked.connect(lambda: self.controllino.set_digital_output(pin = 3, val = False))
+
+		# digital on/off 4-7
+		self.digital_outputs.pin_d4.button_on.clicked.connect(lambda: self.controllino.set_digital_output(pin = 4, val = True))				# NOTE: required to use a lambda in case the method we are calling requires input parameters !
+		self.digital_outputs.pin_d4.button_off.clicked.connect(lambda: self.controllino.set_digital_output(pin = 4, val = False))
+
+		self.digital_outputs.pin_d5.button_on.clicked.connect(lambda: self.controllino.set_digital_output(pin = 5, val = True))
+		self.digital_outputs.pin_d5.button_off.clicked.connect(lambda: self.controllino.set_digital_output(pin = 5, val = False))
+
+		self.digital_outputs.pin_d6.button_on.clicked.connect(lambda: self.controllino.set_digital_output(pin = 6, val = True))
+		self.digital_outputs.pin_d6.button_off.clicked.connect(lambda: self.controllino.set_digital_output(pin = 6, val = False))
+
+		self.digital_outputs.pin_d7.button_on.clicked.connect(lambda: self.controllino.set_digital_output(pin = 7, val = True))
+		self.digital_outputs.pin_d7.button_off.clicked.connect(lambda: self.controllino.set_digital_output(pin = 7, val = False))
+
+		# digital on/off 8-11
+		self.digital_outputs.pin_d8.button_on.clicked.connect(lambda: self.controllino.set_digital_output(pin = 8, val = True))				# NOTE: required to use a lambda in case the method we are calling requires input parameters !
+		self.digital_outputs.pin_d8.button_off.clicked.connect(lambda: self.controllino.set_digital_output(pin = 8, val = False))
+
+		self.digital_outputs.pin_d9.button_on.clicked.connect(lambda: self.controllino.set_digital_output(pin = 9, val = True))
+		self.digital_outputs.pin_d9.button_off.clicked.connect(lambda: self.controllino.set_digital_output(pin = 9, val = False))
+
+		self.digital_outputs.pin_d10.button_on.clicked.connect(lambda: self.controllino.set_digital_output(pin = 10, val = True))
+		self.digital_outputs.pin_d10.button_off.clicked.connect(lambda: self.controllino.set_digital_output(pin = 10, val = False))
+
+		self.digital_outputs.pin_d11.button_on.clicked.connect(lambda: self.controllino.set_digital_output(pin = 11, val = True))
+		self.digital_outputs.pin_d11.button_off.clicked.connect(lambda: self.controllino.set_digital_output(pin = 11, val = False))
+
+	def connect_relay_buttons_signals(self):
+		# relay on/off 0-3
+		self.digital_outputs.pin_d0.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 0, val = True))				# NOTE: required to use a lambda in case the method we are calling requires input parameters !
+		self.digital_outputs.pin_d0.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 0, val = False))
+
+		self.digital_outputs.pin_d1.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 1, val = True))
+		self.digital_outputs.pin_d1.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 1, val = False))
+
+		self.digital_outputs.pin_d2.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 2, val = True))
+		self.digital_outputs.pin_d2.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 2, val = False))
+
+		self.digital_outputs.pin_d3.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 3, val = True))
+		self.digital_outputs.pin_d3.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 3, val = False))
+
+
+		self.digital_outputs.pin_d4.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 4, val = True))
+		self.digital_outputs.pin_d4.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 4, val = False))
+
+		self.digital_outputs.pin_d5.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 5, val = True))
+		self.digital_outputs.pin_d5.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 5, val = False))
+
+		self.digital_outputs.pin_d6.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 6, val = True))
+		self.digital_outputs.pin_d6.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 6, val = False))
+
+		self.digital_outputs.pin_d7.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 7, val = True))
+		self.digital_outputs.pin_d7.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 7, val = False))
+
+
+		self.digital_outputs.pin_d8.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 8, val = True))
+		self.digital_outputs.pin_d8.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 8, val = False))
+
+		self.digital_outputs.pin_d9.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 9, val = True))
+		self.digital_outputs.pin_d9.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 9, val = False))
 
 
 	def on_timer_update_ui(self):
@@ -341,31 +424,31 @@ class controllino_maxi_widget(QWidget):
 
 		self.controllino.request_analog_inputs()
 
-		self.analog_inputs.pin_A0.text_analog_val.setText(str(self.controllino.val_A0))
-		self.analog_inputs.pin_A1.text_analog_val.setText(str(self.controllino.val_A1))
-		self.analog_inputs.pin_A2.text_analog_val.setText(str(self.controllino.val_A2))
-		self.analog_inputs.pin_A3.text_analog_val.setText(str(self.controllino.val_A3))
+		self.analog_inputs.pin_A0.text_analog_val.setText(str(self.controllino.analog_vals[0]))
+		self.analog_inputs.pin_A1.text_analog_val.setText(str(self.controllino.analog_vals[1]))
+		self.analog_inputs.pin_A2.text_analog_val.setText(str(self.controllino.analog_vals[2]))
+		self.analog_inputs.pin_A3.text_analog_val.setText(str(self.controllino.analog_vals[3]))
 
-		self.analog_inputs.pin_A4.text_analog_val.setText(str(self.controllino.val_A4))
-		self.analog_inputs.pin_A5.text_analog_val.setText(str(self.controllino.val_A5))
-		self.analog_inputs.pin_A6.text_analog_val.setText(str(self.controllino.val_A6))
-		self.analog_inputs.pin_A7.text_analog_val.setText(str(self.controllino.val_A7))
+		self.analog_inputs.pin_A4.text_analog_val.setText(str(self.controllino.analog_vals[4]))
+		self.analog_inputs.pin_A5.text_analog_val.setText(str(self.controllino.analog_vals[5]))
+		self.analog_inputs.pin_A6.text_analog_val.setText(str(self.controllino.analog_vals[6]))
+		self.analog_inputs.pin_A7.text_analog_val.setText(str(self.controllino.analog_vals[7]))
 
-		self.analog_inputs.pin_A8.text_analog_val.setText(str(self.controllino.val_A8))
-		self.analog_inputs.pin_A9.text_analog_val.setText(str(self.controllino.val_A9))
+		self.analog_inputs.pin_A8.text_analog_val.setText(str(self.controllino.analog_vals[8]))
+		self.analog_inputs.pin_A9.text_analog_val.setText(str(self.controllino.analog_vals[9]))
 
 		time.sleep(.1)
-		self.controllino.send_command(b'+')  # ONLY FOR TESTING!!! DELETE THIS!!!
 
-
-	def set_pin_val(self, pin, val):
-		"""
-		:param pin: the pin number you wanna set
-		:param val: either True or False, meaning On or Off
-		:return:
-		"""
-		pass
-		# self.controllino.send_command(cmd_pin_d0_on)
+	# # MOVED TO THE CONTROLLINO CLASS ITSELF
+	# # IS IT REALLY REQUIRED HERE ??? !!!
+	# def set_pin_val(self, pin, val):
+	# 	"""
+	# 	:param pin: the pin number you wanna set
+	# 	:param val: either True or False, meaning On or Off
+	# 	:return:
+	# 	"""
+	# 	pass
+	# 	# self.controllino.send_command(cmd_pin_d0_on)
 
 
 
