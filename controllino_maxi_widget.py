@@ -60,6 +60,13 @@ from PyQt5.QtCore import(
 from pyqt_led import Led as QLed
 
 
+# local project imports #
+
+import controllino_maxi
+
+
+import config
+
 # # submodule imports #
 # # from pyqt_common_resources.pyqt_custom_palettes import dark_palette
 #
@@ -194,10 +201,10 @@ class controllino_all_analog_in_widget(QWidget):
 		self.layout_pins_B.addWidget(self.pin_A8)
 		self.pin_A9 = controllino_single_analog_in_widget("A9")
 		self.layout_pins_B.addWidget(self.pin_A9)
-		self.pin_A10 = controllino_single_analog_in_widget("A10")
-		self.layout_pins_B.addWidget(self.pin_A10)
-		self.pin_A11 = controllino_single_analog_in_widget("A11")
-		self.layout_pins_B.addWidget(self.pin_A11)
+		self.pin_IN0 = controllino_single_analog_in_widget("IN0")
+		self.layout_pins_B.addWidget(self.pin_IN0)
+		self.pin_IN1 = controllino_single_analog_in_widget("IN1")
+		self.layout_pins_B.addWidget(self.pin_IN1)
 
 class controllino_single_relay_widget(controllino_single_digital_out_widget):		# in the future may have its own implementation, now it will be used in the same way a digital OUT would be.
 	def __init__(self, name):
@@ -285,9 +292,12 @@ class controllino_maxi_widget(QWidget):
 
 	def __init__(self):
 		"""
-        Constructor, creates and arranges all widgets.
+        Constructor, creates and arranges all widgets, also binds actions and signals
         """
 		super().__init__()
+
+		# controllino object, where the actual data is stored and communication implemented #
+		self.controllino = controllino_maxi.controllino_maxi()
 
 		#### LAYOUT ####
 
@@ -313,6 +323,49 @@ class controllino_maxi_widget(QWidget):
 
 		self.img_controllino = controllino_maxi_image_with_buttons()
 		self.layout_control.addWidget(self.img_controllino)
+
+		# timers #
+		self.timer_update_ui = QTimer()
+		self.timer_update_ui.setInterval(config.ui_config.update_period)				# interval set  via config file
+		self.timer_update_ui.timeout.connect(self.on_timer_update_ui)
+		self.timer_update_ui.start()
+
+
+	def on_timer_update_ui(self):
+		print("on_timer_update_ui timed out")
+		self.update_ui_analog_vals()
+
+
+	def update_ui_analog_vals(self):
+		# THIS FOR NOW IS ONLY A MOCKUP !!! --> NEED TO IMPLEMENT UPDATE ALL VALUES
+
+		self.controllino.request_analog_inputs()
+
+		self.analog_inputs.pin_A0.text_analog_val.setText(str(self.controllino.val_A0))
+		self.analog_inputs.pin_A1.text_analog_val.setText(str(self.controllino.val_A1))
+		self.analog_inputs.pin_A2.text_analog_val.setText(str(self.controllino.val_A2))
+		self.analog_inputs.pin_A3.text_analog_val.setText(str(self.controllino.val_A3))
+
+		self.analog_inputs.pin_A4.text_analog_val.setText(str(self.controllino.val_A4))
+		self.analog_inputs.pin_A5.text_analog_val.setText(str(self.controllino.val_A5))
+		self.analog_inputs.pin_A6.text_analog_val.setText(str(self.controllino.val_A6))
+		self.analog_inputs.pin_A7.text_analog_val.setText(str(self.controllino.val_A7))
+
+		self.analog_inputs.pin_A8.text_analog_val.setText(str(self.controllino.val_A8))
+		self.analog_inputs.pin_A9.text_analog_val.setText(str(self.controllino.val_A9))
+
+		time.sleep(.1)
+		self.controllino.send_command(b'+')  # ONLY FOR TESTING!!! DELETE THIS!!!
+
+
+	def set_pin_val(self, pin, val):
+		"""
+		:param pin: the pin number you wanna set
+		:param val: either True or False, meaning On or Off
+		:return:
+		"""
+		pass
+		# self.controllino.send_command(cmd_pin_d0_on)
 
 
 
