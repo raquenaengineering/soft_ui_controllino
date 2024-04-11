@@ -132,19 +132,24 @@ class controllino_maxi():
         logging.debug("request_analog_inputs")
         self.send_command(b'-')
         analog_vals_stream = self.receive_data()
-        print("analog vals")
-        for val in analog_vals_stream:
-            print(val)
+
         # self.val_A0 = analog_vals               # need to implement for each analog value!!!
 
 
         for i in range(len(self.analog_vals)):    # analog vals declared as independent variables and also as array to iterate.
             bytes = analog_vals_stream[2*i:2*i+2]
-            print("bytes for conversion = " + str(bytes))
-            self.analog_vals[i] = int.from_bytes(bytes, byteorder="big", signed=False)
+            # self.analog_vals[i] = int.from_bytes(bytes, byteorder="big", signed=False)
+            analog_val = int.from_bytes(bytes, byteorder="big", signed=False)
+            volt_val = round(config.controllino_config.supply_voltage * (analog_val / 1024),2)
+            self.analog_vals[i] = volt_val
 
-            print("analog_val " + str(i) + " " + str(self.analog_vals[i]))
-            print(self.analog_vals[i])
+            # print("analog vals")
+            # for val in analog_vals_stream:
+            #     print(val)
+
+            # logging.debug("bytes for conversion = " + str(bytes))
+            # logging.debug("analog_val " + str(i) + " " + str(self.analog_vals[i]))
+            # logging.debug(self.analog_vals[i])
 
 
     def receive_data(self):

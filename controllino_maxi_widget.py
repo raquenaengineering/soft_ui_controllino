@@ -221,32 +221,32 @@ class controllino_relays_widget(QWidget):
 		self.layout_relays_A = QVBoxLayout()					# pins are divided in 2 colmuns, A and B, each 6 pins.
 		self.layout_main.addLayout(self.layout_relays_A)
 
-		# PINS D0-D5 #
-		self.pin_d0 = controllino_single_digital_out_widget("R0");
-		self.layout_relays_A.addWidget(self.pin_d0)
-		self.pin_d1 = controllino_single_digital_out_widget("R1");
-		self.layout_relays_A.addWidget(self.pin_d1)
-		self.pin_d2 = controllino_single_digital_out_widget("R2");
-		self.layout_relays_A.addWidget(self.pin_d2)
-		self.pin_d3 = controllino_single_digital_out_widget("R3");
-		self.layout_relays_A.addWidget(self.pin_d3)
-		self.pin_d4 = controllino_single_digital_out_widget("R4");
-		self.layout_relays_A.addWidget(self.pin_d4)
+		# PINS R0-R4 #
+		self.pin_R0 = controllino_single_digital_out_widget("R0");
+		self.layout_relays_A.addWidget(self.pin_R0)
+		self.pin_R1 = controllino_single_digital_out_widget("R1");
+		self.layout_relays_A.addWidget(self.pin_R1)
+		self.pin_R2 = controllino_single_digital_out_widget("R2");
+		self.layout_relays_A.addWidget(self.pin_R2)
+		self.pin_R3 = controllino_single_digital_out_widget("R3");
+		self.layout_relays_A.addWidget(self.pin_R3)
+		self.pin_R4 = controllino_single_digital_out_widget("R4");
+		self.layout_relays_A.addWidget(self.pin_R4)
 
 		self.layout_relays_B = QVBoxLayout()
 		self.layout_main.addLayout(self.layout_relays_B)
 
-		# PINS D6-D11 #
-		self.pin_d6 = controllino_single_digital_out_widget("R5");
-		self.layout_relays_B.addWidget(self.pin_d6)
-		self.pin_d7 = controllino_single_digital_out_widget("R6");
-		self.layout_relays_B.addWidget(self.pin_d7)
-		self.pin_d8 = controllino_single_digital_out_widget("R7");
-		self.layout_relays_B.addWidget(self.pin_d8)
-		self.pin_d9 = controllino_single_digital_out_widget("R8");
-		self.layout_relays_B.addWidget(self.pin_d9)
-		self.pin_d10 = controllino_single_digital_out_widget("R9");
-		self.layout_relays_B.addWidget(self.pin_d10)
+		# PINS R5-R9 #
+		self.pin_R5 = controllino_single_digital_out_widget("R5");
+		self.layout_relays_B.addWidget(self.pin_R5)
+		self.pin_R6 = controllino_single_digital_out_widget("R6");
+		self.layout_relays_B.addWidget(self.pin_R6)
+		self.pin_R7 = controllino_single_digital_out_widget("R7");
+		self.layout_relays_B.addWidget(self.pin_R7)
+		self.pin_R8 = controllino_single_digital_out_widget("R8");
+		self.layout_relays_B.addWidget(self.pin_R8)
+		self.pin_R9 = controllino_single_digital_out_widget("R9");
+		self.layout_relays_B.addWidget(self.pin_R9)
 
 class controllino_maxi_image_with_buttons(QWidget):
 
@@ -316,8 +316,8 @@ class controllino_maxi_widget(QWidget):
 		self.layout_control.addWidget(self.digital_outputs)
 
 		# Relays #
-		self.layout_relays = controllino_relays_widget()
-		self.layout_control.addWidget(self.layout_relays)
+		self.relays = controllino_relays_widget()
+		self.layout_control.addWidget(self.relays)
 
 		# picture of the controllino representing the status of the IO pins #
 
@@ -329,7 +329,7 @@ class controllino_maxi_widget(QWidget):
 
 		# signal connection #
 		self.connect_digital_buttons_signals()
-
+		self.connect_relay_buttons_signals()
 
 
 		# timers #
@@ -381,37 +381,37 @@ class controllino_maxi_widget(QWidget):
 
 	def connect_relay_buttons_signals(self):
 		# relay on/off 0-3
-		self.digital_outputs.pin_d0.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 0, val = True))				# NOTE: required to use a lambda in case the method we are calling requires input parameters !
-		self.digital_outputs.pin_d0.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 0, val = False))
+		self.relays.pin_R0.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 0, val = True))				# NOTE: required to use a lambda in case the method we are calling requires input parameters !
+		self.relays.pin_R0.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 0, val = False))
 
-		self.digital_outputs.pin_d1.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 1, val = True))
-		self.digital_outputs.pin_d1.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 1, val = False))
+		self.relays.pin_R1.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 1, val = True))
+		self.relays.pin_R1.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 1, val = False))
 
-		self.digital_outputs.pin_d2.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 2, val = True))
-		self.digital_outputs.pin_d2.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 2, val = False))
+		self.relays.pin_R2.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 2, val = True))
+		self.relays.pin_R2.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 2, val = False))
 
-		self.digital_outputs.pin_d3.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 3, val = True))
-		self.digital_outputs.pin_d3.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 3, val = False))
-
-
-		self.digital_outputs.pin_d4.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 4, val = True))
-		self.digital_outputs.pin_d4.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 4, val = False))
-
-		self.digital_outputs.pin_d5.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 5, val = True))
-		self.digital_outputs.pin_d5.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 5, val = False))
-
-		self.digital_outputs.pin_d6.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 6, val = True))
-		self.digital_outputs.pin_d6.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 6, val = False))
-
-		self.digital_outputs.pin_d7.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 7, val = True))
-		self.digital_outputs.pin_d7.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 7, val = False))
+		self.relays.pin_R3.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 3, val = True))
+		self.relays.pin_R3.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 3, val = False))
 
 
-		self.digital_outputs.pin_d8.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 8, val = True))
-		self.digital_outputs.pin_d8.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 8, val = False))
+		self.relays.pin_R4.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 4, val = True))
+		self.relays.pin_R4.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 4, val = False))
 
-		self.digital_outputs.pin_d9.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 9, val = True))
-		self.digital_outputs.pin_d9.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 9, val = False))
+		self.relays.pin_R5.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 5, val = True))
+		self.relays.pin_R5.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 5, val = False))
+
+		self.relays.pin_R6.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 6, val = True))
+		self.relays.pin_R6.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 6, val = False))
+
+		self.relays.pin_R7.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 7, val = True))
+		self.relays.pin_R7.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 7, val = False))
+
+
+		self.relays.pin_R8.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 8, val = True))
+		self.relays.pin_R8.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 8, val = False))
+
+		self.relays.pin_R9.button_on.clicked.connect(lambda: self.controllino.set_relay(pin = 9, val = True))
+		self.relays.pin_R9.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 9, val = False))
 
 
 	def on_timer_update_ui(self):
