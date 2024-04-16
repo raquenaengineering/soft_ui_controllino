@@ -128,10 +128,38 @@ class controllino_maxi():
         """
         self.serial_port.write(command)
 
+    def reset(self):
+        self.send_command(commands.cmd_reset)
+
+    def request_digital_outputs(self):
+        logging.debug("request_digital_outputs")
+        # self.send_command(commands.cmd_request_analog_inputs)
+        self.send_command(b'_')
+        digital_vals_stream = self.receive_digital_data()
+        # logging.debug(digital_vals_stream)
+
+        for i in range(len(self.digital_out_vals)):
+            byte = digital_vals_stream[i]
+            if(byte == 0):
+                self.digital_out_vals[i] = False
+            else:
+                self.digital_out_vals[i] = True
+
+        # print(self.digital_out_vals)
+
+        # there is no return values, as they get stored in class internal variables. (digital_out_vals)
+        return(True)
+
+
+    def receive_digital_data(self):
+        data = self.serial_port.read(14)  # 12 digital values + eol
+        return (data)
+
     def request_analog_inputs(self):
         logging.debug("request_analog_inputs")
+        # self.send_command(commands.cmd_request_analog_inputs)
         self.send_command(b'-')
-        analog_vals_stream = self.receive_data()
+        analog_vals_stream = self.receive_analog_data()
 
         # self.val_A0 = analog_vals               # need to implement for each analog value!!!
 
@@ -152,7 +180,7 @@ class controllino_maxi():
             # logging.debug(self.analog_vals[i])
 
 
-    def receive_data(self):
+    def receive_analog_data(self):
         data = self.serial_port.read(22)       # 10 analog values, 2 bytes per value, define as a variable ???!!!
         return(data)
 
@@ -242,6 +270,8 @@ class controllino_maxi():
             else:
                 self.send_command(commands.cmd_pin_d11_off)
 
+        self.request_digital_outputs()
+
     def set_relay(self, pin, val):                              # seems too similar to set_digital_outupt, unify??? !!!
         """
         Sends the right command to set on or off a certain digital output
@@ -329,6 +359,8 @@ class controllino_maxi():
             for i in range(n_relays):
                 self.set_relay(i, False)
             time.sleep(1)
+
+
 
 
 if __name__ == '__main__':

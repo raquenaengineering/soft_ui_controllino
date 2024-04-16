@@ -18,10 +18,17 @@ firmware side: command_list.h
 
 class controllino_command_list():
 
+    # SPECIAL #
+
+    cmd_reset = b' '                        # IMPOOOOOOOORTANT!
 
     # ANALOG INPUTS #
 
     cmd_request_analog_inputs = '-'
+    cmd_request_digital_outputs = '_'
+    cmd_request_relay_outputs = ','
+    cmd_request_all = ';'
+
 
     # DIGITAL OUTPUTS #
 

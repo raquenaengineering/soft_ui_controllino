@@ -86,10 +86,20 @@ class led(QWidget):
 
 class controllino_led(QWidget):
 
+	"""
+	Encapsulates a radiobutton and a label (which can be on the right or lefs side),
+	to be used together as a representation of one single led at the controllino.
+	"""
+
 	def __init__(self, led_text = "", text_pos = "right"):
+		"""
+
+		:param led_text: Text to be shown at the label
+		:param text_pos: Choose between "right" or "left" to the radiobutton.
+		"""
 		super().__init__()
 		# widget #
-		# self.setContentsMargins(0,0,0,0)
+		self.setContentsMargins(0,0,0,0)
 		# layout #
 		self.layout_main = QHBoxLayout()
 		self.layout_main.setContentsMargins(0,0,0,0)
@@ -107,12 +117,22 @@ class controllino_led(QWidget):
 								 'font-weight: bold;'
 								 '}')
 
-		self.led.setStyleSheet('QRadioButton{font: 0pt Helvetica MS;} '
-							   'QRadioButton::indicator '
-							   '{ width: 16px; height: 16px;};'
-							   'QRadioButton::indicator:checked '
-							   '{ color: green;};'
-							   )
+		self.led.setStyleSheet(
+			"QRadioButton::indicator:checked { background-color: #00FF00; }"
+			"QRadioButton::indicator:checked { background-color: #00FF00; }"
+			"QRadioButton::indicator:unchecked { background-color: grey; }"
+			"QRadioButton::indicator { width: 14px; "
+										"height: 14px; "
+										"border-radius: 8px; "
+										"border: 2px solid black;}"
+		)
+
+		# self.led.setStyleSheet('QRadioButton{font: 0pt Helvetica MS;} '
+		# 					   'QRadioButton::indicator '
+		# 					   '{ width: 20px; height: 20px;};'
+		# 					   'QRadioButton::indicator:checked '
+		# 					   '{ background-color: green;};'
+		# 					   )
 
 		if(text_pos == "right"):
 			self.layout_main.addWidget(self.led)
@@ -121,8 +141,6 @@ class controllino_led(QWidget):
 		elif(text_pos == "left"):
 			self.layout_main.addWidget(self.label)
 			self.layout_main.addWidget(self.led)
-
-
 
 class controllino_leds_group(QWidget):
 	"""
@@ -155,11 +173,12 @@ class controllino_leds_group(QWidget):
 
 
 		self.layout_A = QVBoxLayout()
+		self.layout_A.setContentsMargins(0,0,0,0)
 		self.layout_frame.addLayout(self.layout_A)
 
 		self.layout_B = QVBoxLayout()
+		self.layout_B.setContentsMargins(0,0,0,0)
 		self.layout_frame.addLayout(self.layout_B)
-
 
 class controllino_leds_analog(controllino_leds_group):
 
@@ -278,19 +297,12 @@ class controllino_leds_widget(QWidget):
 		# self.setMaximumWidth(240)
 		# self.setMaximumHeight(120)
 
-		self.setAutoFillBackground(True)
+		self.setAutoFillBackground(True)				# so we can differentiate the leds widget from the image
 		self.setContentsMargins(0,0,0,0)
 
 		self.layout_main = QHBoxLayout()
 		self.layout_main.setContentsMargins(0,0,0,0)
 		self.setLayout(self.layout_main)
-
-
-		self.img_controllino = QLabel("There should be the image of the controllino here")
-		# self.frame_main.addWidget(self.img_controllino)
-
-		self.pixmap_controllino = QPixmap("docu/controllino.png")
-		self.img_controllino.setPixmap(self.pixmap_controllino)
 
 		# Analog #
 		self.analog_leds = controllino_leds_analog()
@@ -314,12 +326,16 @@ class controllino_maxi_image_with_leds(QWidget):
 
 		# picture of the controllino representing the status of the IO pins #
 
+		self.setContentsMargins(0,0,0,0)
+
+
 		self.pixmap_controllino = QPixmap("docu/controllino_744x570.png")
 		self.pic_size = self.pixmap_controllino.size()
 
 
 		# main layout #
 		self.layout_main = QHBoxLayout()
+		self.layout_main.setContentsMargins(0,0,0,0)
 		self.setLayout(self.layout_main)
 
 		# image container #
@@ -328,35 +344,10 @@ class controllino_maxi_image_with_leds(QWidget):
 		self.layout_main.addWidget(self.img_controllino)
 		self.img_controllino.setPixmap(self.pixmap_controllino)
 
-		#
-
 		self.leds = controllino_leds_widget()
 		self.leds.setParent(self.img_controllino)
 		self.leds.show()
 		self.leds.setGeometry(19 ,217, 316, 124)
-
-		# self.button_over_image = QPushButton()
-		# self.button_over_image.setParent(self.img_controllino)
-		# self.button_over_image.show()
-		# self.button_over_image.setGeometry(14,120,100,100)
-
-
-	# def __init__(self):
-	#     super().__init__()
-	#
-	#     self.layout_main = QHBoxLayout()
-	#     self.frame = QFrame()
-	#     self.layout_main.addWidget(self.frame)
-	#     self.frame.setGeometry(120,120,120,120)
-	#     self.frame.setFixedSize(120,120)
-	#     # self.frame.drawFrame()
-	#     self.frame.setStyleSheet("border :3px solid blue;")
-	#     self.layout_frame = QVBoxLayout()
-	#     self.frame.setLayout(self.layout_frame)
-	#     self.button1 = QPushButton()
-	#     self.layout_frame.addWidget(self.button1)
-	#     self.button2 = QPushButton()
-	#     self.layout_frame.addWidget(self.button2)
 
 
 
