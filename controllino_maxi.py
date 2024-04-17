@@ -53,6 +53,36 @@ class controllino_maxi():
             self.val_A9
         ]
 
+        # IMPORTANT NOTE ABOUT ANALOG VALS !!! #
+        # The LEDs at the analog pins go from ON to OFF 8.43V (APPROXIMATED TO 8.4V)
+        # The LEDs at the analog pins go from OFF to ON 5.65V (APPROXIMATED TO 5.6V)
+
+        self.val_AL0 = False                     #  NOTE:
+        self.val_AL1 = False                     # THESE VARIABLES ARE CURRENTLY UNUSED
+        self.val_AL2 = False                     # NEED TO FIND A WAY TO LINK THEM BY REFERENCE WITH THE VALUES OF THE ARRAY
+        self.val_AL3 = False
+
+        self.val_AL4 = False
+        self.val_AL5 = False
+        self.val_AL6 = False
+        self.val_AL7 = False
+
+        self.val_AL8 = False
+        self.val_AL9 = False
+
+        self.analog_logic_vals = [
+            self.val_AL0,
+            self.val_AL1,
+            self.val_AL2,
+            self.val_AL3,
+            self.val_AL4,
+            self.val_AL5,
+            self.val_AL6,
+            self.val_AL7,
+            self.val_AL8,
+            self.val_AL9
+        ]
+
         # DIGITAL_INPUTS #
         self.status_IN0 = False
         self.status_IN1 = False
@@ -189,6 +219,23 @@ class controllino_maxi():
             analog_val = int.from_bytes(bytes, byteorder="big", signed=False)
             volt_val = round(config.controllino_config.supply_voltage * (analog_val / 1024),2)
             self.analog_vals[i] = volt_val
+            # USE HERE VOLT VAL TO ALSO UPDATE THE LEDS ON/OFF!!!!
+
+            # !!! the analog values don't correspond to real voltage values, hence a correction factor is used
+            # Best option would be use this correction factor when assigning volt_val level, but first
+            # I would like to speak with the manufacturer (maybe my controllino is broken).
+            correction_factor = config.controllino_config.analog_val_measured_at_supply/config.controllino_config.supply_voltage
+
+            if self.analog_logic_vals[i] == True:
+                if(volt_val < config.controllino_config.led_logic_low*correction_factor):
+                    self.analog_logic_vals[i] = False
+            elif self.analog_logic_vals[i] == False:
+                if(volt_val > config.controllino_config.led_logic_high*correction_factor):
+                    self.analog_logic_vals[i] = True
+
+            # logging.debug("Analog logic vals:")
+            # logging.debug(self.analog_logic_vals)
+
 
             # print("analog vals")
             # for val in analog_vals_stream:

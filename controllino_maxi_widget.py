@@ -443,7 +443,22 @@ class controllino_maxi_widget(QWidget):
         self.analog_inputs.pin_A8.text_analog_val.setText(str(self.controllino.analog_vals[8]))
         self.analog_inputs.pin_A9.text_analog_val.setText(str(self.controllino.analog_vals[9]))
 
-        time.sleep(.1)
+        self.img_controllino.leds.analog_leds.led_a0.led.setChecked(self.controllino.analog_logic_vals[0])
+        self.img_controllino.leds.analog_leds.led_a1.led.setChecked(self.controllino.analog_logic_vals[1])
+        self.img_controllino.leds.analog_leds.led_a2.led.setChecked(self.controllino.analog_logic_vals[2])
+        self.img_controllino.leds.analog_leds.led_a3.led.setChecked(self.controllino.analog_logic_vals[3])
+
+        self.img_controllino.leds.analog_leds.led_a4.led.setChecked(self.controllino.analog_logic_vals[4])
+        self.img_controllino.leds.analog_leds.led_a5.led.setChecked(self.controllino.analog_logic_vals[5])
+        self.img_controllino.leds.analog_leds.led_a6.led.setChecked(self.controllino.analog_logic_vals[6])
+        self.img_controllino.leds.analog_leds.led_a7.led.setChecked(self.controllino.analog_logic_vals[7])
+
+        self.img_controllino.leds.analog_leds.led_a8.led.setChecked(self.controllino.analog_logic_vals[8])
+        self.img_controllino.leds.analog_leds.led_a9.led.setChecked(self.controllino.analog_logic_vals[9])
+
+
+
+
 
     def update_ui_digital_vals(self):
         logging.debug("updating ui digital vals")

@@ -15,3 +15,6 @@ class socket_config():
 
 class controllino_config():
     supply_voltage = 12                     # Voltage supplied to the controllino, usually 12 or 24 V
+    analog_val_measured_at_supply = 9.59   # maybe controllino broken --> measured val and supply not matching, so need to compensate.
+    led_logic_high = 8.43                   # LEDs connected to the analog pins, need to have at least this voltage to turn on.
+    led_logic_low = 5.65                    # LEDs conneted to analog pin turn off when they go below this voltage.
