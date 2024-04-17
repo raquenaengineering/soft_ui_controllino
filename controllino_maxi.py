@@ -159,7 +159,7 @@ class controllino_maxi():
         self.serial_port.write(command)
 
     def reset(self):
-        self.send_command(commands.cmd_reset)
+        self.send_command(commands.cmd_software_reset)
 
     def request_digital_outputs(self):
         logging.debug("request_relay_outputs")
@@ -368,63 +368,63 @@ class controllino_maxi():
         """
         if(pin == 0):
             if(val == True):
-                self.send_command(commands.cmd_pin_R0_on)
+                self.send_command(commands.cmd_pin_r0_on)
             else:
-                self.send_command(commands.cmd_pin_R0_off)
+                self.send_command(commands.cmd_pin_r0_off)
 
         elif(pin == 1):
             if(val == True):
-                self.send_command(commands.cmd_pin_R1_on)
+                self.send_command(commands.cmd_pin_r1_on)
             else:
-                self.send_command(commands.cmd_pin_R1_off)
+                self.send_command(commands.cmd_pin_r1_off)
 
         elif(pin == 2):
             if(val == True):
-                self.send_command(commands.cmd_pin_R2_on)
+                self.send_command(commands.cmd_pin_r2_on)
             else:
-                self.send_command(commands.cmd_pin_R2_off)
+                self.send_command(commands.cmd_pin_r2_off)
 
         elif(pin == 3):
             if(val == True):
-                self.send_command(commands.cmd_pin_R3_on)
+                self.send_command(commands.cmd_pin_r3_on)
             else:
-                self.send_command(commands.cmd_pin_R3_off)
+                self.send_command(commands.cmd_pin_r3_off)
 
         elif(pin == 4):
             if(val == True):
-                self.send_command(commands.cmd_pin_R4_on)
+                self.send_command(commands.cmd_pin_r4_on)
             else:
-                self.send_command(commands.cmd_pin_R4_off)
+                self.send_command(commands.cmd_pin_r4_off)
 
         elif(pin == 5):
             if(val == True):
-                self.send_command(commands.cmd_pin_R5_on)
+                self.send_command(commands.cmd_pin_r5_on)
             else:
-                self.send_command(commands.cmd_pin_R5_off)
+                self.send_command(commands.cmd_pin_r5_off)
 
         elif(pin == 6):
             if(val == True):
-                self.send_command(commands.cmd_pin_R6_on)
+                self.send_command(commands.cmd_pin_r6_on)
             else:
-                self.send_command(commands.cmd_pin_R6_off)
+                self.send_command(commands.cmd_pin_r6_off)
 
         elif(pin == 7):
             if(val == True):
-                self.send_command(commands.cmd_pin_R7_on)
+                self.send_command(commands.cmd_pin_r7_on)
             else:
-                self.send_command(commands.cmd_pin_R7_off)
+                self.send_command(commands.cmd_pin_r7_off)
 
         elif(pin == 8):
             if(val == True):
-                self.send_command(commands.cmd_pin_R8_on)
+                self.send_command(commands.cmd_pin_r8_on)
             else:
-                self.send_command(commands.cmd_pin_R8_off)
+                self.send_command(commands.cmd_pin_r8_off)
 
         elif(pin == 9):
             if(val == True):
-                self.send_command(commands.cmd_pin_R9_on)
+                self.send_command(commands.cmd_pin_r9_on)
             else:
-                self.send_command(commands.cmd_pin_R9_off)
+                self.send_command(commands.cmd_pin_r9_off)
 
     def test_digital_outputs(self):
         n_io_pins = 12
