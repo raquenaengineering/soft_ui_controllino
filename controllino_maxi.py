@@ -132,11 +132,31 @@ class controllino_maxi():
         self.send_command(commands.cmd_reset)
 
     def request_digital_outputs(self):
+        logging.debug("request_relay_outputs")
+        # # self.send_command(commands.cmd_request_analog_inputs)
+        # self.send_command(b'_')
+        # digital_vals_stream = self.receive_digital_data()
+        # logging.debug(digital_vals_stream)
+        #
+        # for i in range(len(self.digital_out_vals)):
+        #     byte = digital_vals_stream[i]
+        #     if(byte == 0):
+        #         self.digital_out_vals[i] = False
+        #     else:
+        #         self.digital_out_vals[i] = True
+        #
+        # # print(self.digital_out_vals)
+        #
+        # # there is no return values, as they get stored in class internal variables. (digital_out_vals)
+        # return(True)
+
+
+    def request_digital_outputs(self):
         logging.debug("request_digital_outputs")
         # self.send_command(commands.cmd_request_analog_inputs)
-        self.send_command(b'_')
+        self.send_command(commands.cmd_request_digital_outputs)
         digital_vals_stream = self.receive_digital_data()
-        # logging.debug(digital_vals_stream)
+        logging.debug(digital_vals_stream)
 
         for i in range(len(self.digital_out_vals)):
             byte = digital_vals_stream[i]
@@ -150,7 +170,6 @@ class controllino_maxi():
         # there is no return values, as they get stored in class internal variables. (digital_out_vals)
         return(True)
 
-
     def receive_digital_data(self):
         data = self.serial_port.read(14)  # 12 digital values + eol
         return (data)
@@ -158,7 +177,7 @@ class controllino_maxi():
     def request_analog_inputs(self):
         logging.debug("request_analog_inputs")
         # self.send_command(commands.cmd_request_analog_inputs)
-        self.send_command(b'-')
+        self.send_command(commands.cmd_request_analog_inputs)
         analog_vals_stream = self.receive_analog_data()
 
         # self.val_A0 = analog_vals               # need to implement for each analog value!!!
@@ -179,10 +198,30 @@ class controllino_maxi():
             # logging.debug("analog_val " + str(i) + " " + str(self.analog_vals[i]))
             # logging.debug(self.analog_vals[i])
 
-
     def receive_analog_data(self):
         data = self.serial_port.read(22)       # 10 analog values, 2 bytes per value, define as a variable ???!!!
         return(data)
+
+    def request_relay_outputs(self):
+        logging.debug("request_relay_outputs")
+        self.send_command(commands.cmd_request_relay_outputs)
+        relay_vals_stream = self.receive_relays_data()
+        # logging.debug(relay_vals_stream)
+
+        for i in range(len(self.relays_vals)):
+            byte = relay_vals_stream[i]
+            if(byte == 0):
+                self.relays_vals[i] = False
+            else:
+                self.relays_vals[i] = True
+
+        # there is no return values, as they get stored in class internal variables. (digital_out_vals)
+        return(True)
+
+    def receive_relays_data(self):
+        data = self.serial_port.read(12)  # 10 digital values + eol
+        return (data)
+
 
     def set_digital_output(self, pin, val):
         """

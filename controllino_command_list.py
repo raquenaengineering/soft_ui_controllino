@@ -24,10 +24,10 @@ class controllino_command_list():
 
     # ANALOG INPUTS #
 
-    cmd_request_analog_inputs = '-'
-    cmd_request_digital_outputs = '_'
-    cmd_request_relay_outputs = ','
-    cmd_request_all = ';'
+    cmd_request_analog_inputs = b'-'
+    cmd_request_digital_outputs = b'_'
+    cmd_request_relay_outputs = b','
+    cmd_request_all = b';'
 
 
     # DIGITAL OUTPUTS #

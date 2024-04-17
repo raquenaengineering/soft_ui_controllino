@@ -328,8 +328,7 @@ class controllino_maxi_widget(QWidget):
         self.timer_update_ui.start()
 
         # initial update with the remote values #
-        self.update_ui_analog_vals()
-        self.update_ui_digital_vals()
+        self.update_ui_all_vals()
 
         self.set_shortcuts()
 
@@ -374,13 +373,12 @@ class controllino_maxi_widget(QWidget):
         self.digital_outputs.pin_d11.button_on.clicked.connect(lambda: self.controllino.set_digital_output(pin = 11, val = True))
         self.digital_outputs.pin_d11.button_off.clicked.connect(lambda: self.controllino.set_digital_output(pin = 11, val = False))
 
+
+        # those are for the controllino image side # TO BE FINISHED!!! #
         self.img_controllino.leds.digital_leds.led_d0.led.clicked.connect(lambda: self.controllino.set_digital_output(pin = 0, val = True))
         self.img_controllino.leds.digital_leds.led_d0.led.clicked.connect(
             lambda: self.controllino.set_digital_output(pin = 0,
                                                         val = self.img_controllino.leds.digital_leds.led_d0.led.state))
-
-
-
 
 
     def connect_relay_buttons_signals(self):
@@ -418,10 +416,14 @@ class controllino_maxi_widget(QWidget):
         self.relays.pin_R9.button_off.clicked.connect(lambda: self.controllino.set_relay(pin = 9, val = False))
 
     def on_timer_update_ui(self):
-        print("on_timer_update_ui timed out")
+        logging.debug("timer")
+        self.update_ui_all_vals()
+
+
+    def update_ui_all_vals(self):
         self.update_ui_analog_vals()
         self.update_ui_digital_vals()
-
+        self.update_ui_relay_vals()
 
     def update_ui_analog_vals(self):
         # THIS FOR NOW IS ONLY A MOCKUP !!! --> NEED TO IMPLEMENT UPDATE ALL VALUES
@@ -444,7 +446,7 @@ class controllino_maxi_widget(QWidget):
         time.sleep(.1)
 
     def update_ui_digital_vals(self):
-        print("updating ui digital vals")
+        logging.debug("updating ui digital vals")
         self.controllino.request_digital_outputs()
         # VECTORIZE THIS !!! #
         self.img_controllino.leds.digital_leds.led_d0.led.setChecked(self.controllino.digital_out_vals[0])
@@ -461,24 +463,27 @@ class controllino_maxi_widget(QWidget):
         self.img_controllino.leds.digital_leds.led_d10.led.setChecked(self.controllino.digital_out_vals[10])
         self.img_controllino.leds.digital_leds.led_d11.led.setChecked(self.controllino.digital_out_vals[11])
 
+    def update_ui_relay_vals(self):
+        logging.debug("updating ui relay vals")
+        self.controllino.request_relay_outputs()
+        # VECTORIZE THIS !!! #
+        self.img_controllino.leds.relays_leds.led_r0.led.setChecked(self.controllino.relays_vals[0])
+        self.img_controllino.leds.relays_leds.led_r1.led.setChecked(self.controllino.relays_vals[1])
+        self.img_controllino.leds.relays_leds.led_r2.led.setChecked(self.controllino.relays_vals[2])
+        self.img_controllino.leds.relays_leds.led_r3.led.setChecked(self.controllino.relays_vals[3])
+        self.img_controllino.leds.relays_leds.led_r4.led.setChecked(self.controllino.relays_vals[4])
+
+        self.img_controllino.leds.relays_leds.led_r5.led.setChecked(self.controllino.relays_vals[5])
+        self.img_controllino.leds.relays_leds.led_r6.led.setChecked(self.controllino.relays_vals[6])
+        self.img_controllino.leds.relays_leds.led_r7.led.setChecked(self.controllino.relays_vals[7])
+        self.img_controllino.leds.relays_leds.led_r8.led.setChecked(self.controllino.relays_vals[8])
+        self.img_controllino.leds.relays_leds.led_r9.led.setChecked(self.controllino.relays_vals[9])
+
+
 
     def set_shortcuts(self):
         reset_shortcut = QShortcut(' ', self)
         reset_shortcut.activated.connect(self.controllino.reset)
-
-
-
-    # # MOVED TO THE CONTROLLINO CLASS ITSELF
-    # # IS IT REALLY REQUIRED HERE ??? !!!
-    # def set_pin_val(self, pin, val):
-    # 	"""
-    # 	:param pin: the pin number you wanna set
-    # 	:param val: either True or False, meaning On or Off
-    # 	:return:
-    # 	"""
-    # 	pass
-    # 	# self.controllino.send_command(cmd_pin_d0_on)
-
 
 
 class MainWindow(QMainWindow):
