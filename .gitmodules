@@ -1,0 +1,3 @@
+[submodule "firm/firm_ui_controllino_io"]
+	path = firm/firm_ui_controllino_io
+	url = https://github.com/raquenaengineering/firm_ui_controllino_io.git
