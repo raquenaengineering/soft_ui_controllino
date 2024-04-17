@@ -497,8 +497,12 @@ class controllino_maxi_widget(QWidget):
 
 
     def set_shortcuts(self):
-        reset_shortcut = QShortcut(' ', self)
-        reset_shortcut.activated.connect(self.controllino.reset)
+        shortcut_reset = QShortcut(' ', self)
+        shortcut_reset.activated.connect(self.controllino.reset)
+
+        shortcut_all_off = QShortcut('<', self)
+        shortcut_all_off.activated.connect(self.controllino.all_outputs_off)
+
 
 
 class MainWindow(QMainWindow):

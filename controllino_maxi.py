@@ -161,6 +161,10 @@ class controllino_maxi():
     def reset(self):
         self.send_command(commands.cmd_software_reset)
 
+    def all_outputs_off(self):
+        # print("all outputs off method triggered")
+        self.send_command(commands.cmd_all_off)
+
     def request_digital_outputs(self):
         logging.debug("request_relay_outputs")
         # # self.send_command(commands.cmd_request_analog_inputs)
