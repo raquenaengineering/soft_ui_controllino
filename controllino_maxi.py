@@ -41,11 +41,15 @@ class controllino_communication_interface():
 
     def read(self, buffer_size=1024):
         if self.connection_type == "serial":
-            return self.serial_connection.read(buffer_size)
+            data =  self.serial_connection.read(buffer_size)
         elif self.connection_type == "socket":
-            return self.socket_connection.recv(buffer_size)
+            data =  self.socket_connection.recv(buffer_size)
         else:
+            data = None
             raise ValueError("Invalid connection type.")
+        logging.info("data inside read method:")
+        logging.info(data)
+        return(data)
 
     def close(self):
         if self.connection_type == "serial":
@@ -239,8 +243,8 @@ class controllino_maxi():
         logging.debug("request_digital_outputs")
         # self.send_command(commands.cmd_request_analog_inputs)
         self.send_command(commands.cmd_request_digital_outputs)
+        time.sleep(config.comm_config.t_wait_between_request_and_read)
         digital_vals_stream = self.receive_digital_data()
-        logging.info(digital_vals_stream)
 
         try:
 
@@ -268,6 +272,7 @@ class controllino_maxi():
         logging.debug("request_analog_inputs")
         # self.send_command(commands.cmd_request_analog_inputs)
         self.send_command(commands.cmd_request_analog_inputs)
+        time.sleep(config.comm_config.t_wait_between_request_and_read)
         analog_vals_stream = self.receive_analog_data()
 
         # self.val_A0 = analog_vals               # need to implement for each analog value!!!
@@ -318,6 +323,7 @@ class controllino_maxi():
     def request_relay_outputs(self):
         logging.debug("request_relay_outputs")
         self.send_command(commands.cmd_request_relay_outputs)
+        time.sleep(config.comm_config.t_wait_between_request_and_read)
         relay_vals_stream = self.receive_relays_data()
         # logging.debug(relay_vals_stream)
 

@@ -1,9 +1,10 @@
 
 class ui_config():
-    update_period = 100                    # period in ms in which the ui is updated / INDEPENDENT ON UPDATES OF THE CONTROLLINO CLASS!!!
+    update_period = 200                    # period in ms in which the ui is updated / INDEPENDENT ON UPDATES OF THE CONTROLLINO CLASS!!!
 
 class comm_config():
     comm_type = "socket"                    # serial or socket communication, ideally will also set modifications in firmware to block the other comm. method.
+    t_wait_between_request_and_read = 0.02  # time to wait after sending a data request command and reading the data
 
 class serial_config():
 
