@@ -1,7 +1,8 @@
 # soft_ui_controllino
 Software UI written in Pyqt for easy control of the controllino IO pins.
 
-
+Here a little Demo:
+![Controllino UI Widget View](https://github.com/raquenaengineering/soft_ui_controllino/blob/main/docu/readme_media/controllino_widget_ui.PNG)
 
 ## NOTES: ##
 -  implement widget and controllino as two differentiated classes
