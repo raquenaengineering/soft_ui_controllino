@@ -2,6 +2,8 @@
 class ui_config():
     update_period = 100                    # period in ms in which the ui is updated / INDEPENDENT ON UPDATES OF THE CONTROLLINO CLASS!!!
 
+class comm_config():
+    comm_type = "socket"                    # serial or socket communication, ideally will also set modifications in firmware to block the other comm. method.
 
 class serial_config():
 
@@ -9,7 +11,7 @@ class serial_config():
     port = "COM4"                           # use device manager to figure out the assigned port before running script.
 
 class socket_config():
-    ip = "192.168.4.200"                    # needs to be set up at the firmware side, any free ip will do
+    ip = "192.168.4.128"                    # needs to be set up at the firmware side, any free ip will do
     port = 8881                             # any free port should do, BUT: CHECK STANDARDS FOR BETTER CHOICE!
 
 

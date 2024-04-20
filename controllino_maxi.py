@@ -5,11 +5,55 @@ import time
 
 # pip installed imports #
 import serial
+import socket
 
 # project local imports #
 import config
 from controllino_command_list import controllino_command_list as commands
 
+
+class controllino_communication_interface():
+
+    def __init__(self, connection_type = "serial"):
+        self.connection_type = connection_type
+        if self.connection_type == "serial":
+            port = config.serial_config.port
+            baudrate = config.serial_config.baudrate
+            self.serial_connection = serial.Serial(port, baudrate)
+        elif self.connection_type == "socket":
+            print("socket initialization started")
+            host = config.socket_config.ip
+            port = config.socket_config.port
+            self.socket_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.socket_connection.connect((host, port))
+            print("socket initialization finished")
+        else:
+            raise ValueError("Invalid connection type. Choose 'serial' or 'socket'.")
+
+    def write(self, data):
+        if self.connection_type == "serial":
+            # self.serial_connection.write(data.encode())
+            self.serial_connection.write(data)
+        elif self.connection_type == "socket":
+            self.socket_connection.sendall(data)
+        else:
+            raise ValueError("Invalid connection type.")
+
+    def read(self, buffer_size=1024):
+        if self.connection_type == "serial":
+            return self.serial_connection.read(buffer_size)
+        elif self.connection_type == "socket":
+            return self.socket_connection.recv(buffer_size)
+        else:
+            raise ValueError("Invalid connection type.")
+
+    def close(self):
+        if self.connection_type == "serial":
+            self.serial_connection.close()
+        elif self.connection_type == "socket":
+            self.socket_connection.close()
+        else:
+            raise ValueError("Invalid connection type.")
 
 class controllino_maxi():
 
@@ -18,8 +62,11 @@ class controllino_maxi():
         # communication variables #     # THIS SHOULD GO OUT, OPTION TO DO IT WITH SERIAL OR SOCKET AVAILABLE, OR
         # JUST TO GIVE AN OBJECT AS AN INPUT WHICH HAS READ AND WRITE METHODS !!!
 
-        self.serial_port = serial.Serial(port = config.serial_config.port,
-                                         baudrate = config.serial_config.baudrate)
+        # self.serial_port = serial.Serial(port = config.serial_config.port,
+        #                                  baudrate = config.serial_config.baudrate)
+
+        self.comm_iface = controllino_communication_interface(config.comm_config.comm_type)                             # so we can use indistinctly serial or socket, refer to config file.
+
 
 
 
@@ -156,7 +203,10 @@ class controllino_maxi():
         :param command:
         :return:
         """
-        self.serial_port.write(command)
+        # self.serial_port.write(command)
+        logging.info("writing command " + str(command))
+        self.comm_iface.write(command)
+
 
     def reset(self):
         self.send_command(commands.cmd_software_reset)
@@ -165,24 +215,24 @@ class controllino_maxi():
         # print("all outputs off method triggered")
         self.send_command(commands.cmd_all_off)
 
-    def request_digital_outputs(self):
-        logging.debug("request_relay_outputs")
-        # # self.send_command(commands.cmd_request_analog_inputs)
-        # self.send_command(b'_')
-        # digital_vals_stream = self.receive_digital_data()
-        # logging.debug(digital_vals_stream)
-        #
-        # for i in range(len(self.digital_out_vals)):
-        #     byte = digital_vals_stream[i]
-        #     if(byte == 0):
-        #         self.digital_out_vals[i] = False
-        #     else:
-        #         self.digital_out_vals[i] = True
-        #
-        # # print(self.digital_out_vals)
-        #
-        # # there is no return values, as they get stored in class internal variables. (digital_out_vals)
-        # return(True)
+    # def request_digital_outputs(self):
+    #     logging.debug("request_relay_outputs")
+    #     # # self.send_command(commands.cmd_request_analog_inputs)
+    #     # self.send_command(b'_')
+    #     # digital_vals_stream = self.receive_digital_data()
+    #     # logging.debug(digital_vals_stream)
+    #     #
+    #     # for i in range(len(self.digital_out_vals)):
+    #     #     byte = digital_vals_stream[i]
+    #     #     if(byte == 0):
+    #     #         self.digital_out_vals[i] = False
+    #     #     else:
+    #     #         self.digital_out_vals[i] = True
+    #     #
+    #     # # print(self.digital_out_vals)
+    #     #
+    #     # # there is no return values, as they get stored in class internal variables. (digital_out_vals)
+    #     # return(True)
 
 
     def request_digital_outputs(self):
@@ -190,14 +240,20 @@ class controllino_maxi():
         # self.send_command(commands.cmd_request_analog_inputs)
         self.send_command(commands.cmd_request_digital_outputs)
         digital_vals_stream = self.receive_digital_data()
-        logging.debug(digital_vals_stream)
+        logging.info(digital_vals_stream)
 
-        for i in range(len(self.digital_out_vals)):
-            byte = digital_vals_stream[i]
-            if(byte == 0):
-                self.digital_out_vals[i] = False
-            else:
-                self.digital_out_vals[i] = True
+        try:
+
+            for i in range(len(self.digital_out_vals)):
+                byte = digital_vals_stream[i]
+                if(byte == 0):
+                    self.digital_out_vals[i] = False
+                else:
+                    self.digital_out_vals[i] = True
+
+        except:
+
+            logging.warning("Incoming data misformed")
 
         # print(self.digital_out_vals)
 
@@ -205,7 +261,7 @@ class controllino_maxi():
         return(True)
 
     def receive_digital_data(self):
-        data = self.serial_port.read(14)  # 12 digital values + eol
+        data = self.comm_iface.read(14)  # 12 digital values + eol
         return (data)
 
     def request_analog_inputs(self):
@@ -217,40 +273,46 @@ class controllino_maxi():
         # self.val_A0 = analog_vals               # need to implement for each analog value!!!
 
 
-        for i in range(len(self.analog_vals)):    # analog vals declared as independent variables and also as array to iterate.
-            bytes = analog_vals_stream[2*i:2*i+2]
-            # self.analog_vals[i] = int.from_bytes(bytes, byteorder="big", signed=False)
-            analog_val = int.from_bytes(bytes, byteorder="big", signed=False)
-            volt_val = round(config.controllino_config.supply_voltage * (analog_val / 1024),2)
-            self.analog_vals[i] = volt_val
-            # USE HERE VOLT VAL TO ALSO UPDATE THE LEDS ON/OFF!!!!
+        try:
 
-            # !!! the analog values don't correspond to real voltage values, hence a correction factor is used
-            # Best option would be use this correction factor when assigning volt_val level, but first
-            # I would like to speak with the manufacturer (maybe my controllino is broken).
-            correction_factor = config.controllino_config.analog_val_measured_at_supply/config.controllino_config.supply_voltage
+            for i in range(len(self.analog_vals)):    # analog vals declared as independent variables and also as array to iterate.
+                bytes = analog_vals_stream[2*i:2*i+2]
+                # self.analog_vals[i] = int.from_bytes(bytes, byteorder="big", signed=False)
+                analog_val = int.from_bytes(bytes, byteorder="big", signed=False)
+                volt_val = round(config.controllino_config.supply_voltage * (analog_val / 1024),2)
+                self.analog_vals[i] = volt_val
+                # USE HERE VOLT VAL TO ALSO UPDATE THE LEDS ON/OFF!!!!
 
-            if self.analog_logic_vals[i] == True:
-                if(volt_val < config.controllino_config.led_logic_low*correction_factor):
-                    self.analog_logic_vals[i] = False
-            elif self.analog_logic_vals[i] == False:
-                if(volt_val > config.controllino_config.led_logic_high*correction_factor):
-                    self.analog_logic_vals[i] = True
+                # !!! the analog values don't correspond to real voltage values, hence a correction factor is used
+                # Best option would be use this correction factor when assigning volt_val level, but first
+                # I would like to speak with the manufacturer (maybe my controllino is broken).
+                correction_factor = config.controllino_config.analog_val_measured_at_supply/config.controllino_config.supply_voltage
 
-            # logging.debug("Analog logic vals:")
-            # logging.debug(self.analog_logic_vals)
+                if self.analog_logic_vals[i] == True:
+                    if(volt_val < config.controllino_config.led_logic_low*correction_factor):
+                        self.analog_logic_vals[i] = False
+                elif self.analog_logic_vals[i] == False:
+                    if(volt_val > config.controllino_config.led_logic_high*correction_factor):
+                        self.analog_logic_vals[i] = True
+
+                # logging.debug("Analog logic vals:")
+                # logging.debug(self.analog_logic_vals)
 
 
-            # print("analog vals")
-            # for val in analog_vals_stream:
-            #     print(val)
+                # print("analog vals")
+                # for val in analog_vals_stream:
+                #     print(val)
 
-            # logging.debug("bytes for conversion = " + str(bytes))
-            # logging.debug("analog_val " + str(i) + " " + str(self.analog_vals[i]))
-            # logging.debug(self.analog_vals[i])
+                # logging.debug("bytes for conversion = " + str(bytes))
+                # logging.debug("analog_val " + str(i) + " " + str(self.analog_vals[i]))
+                # logging.debug(self.analog_vals[i])
+
+        except:
+            logging.warning("Incoming data misformed")
+
 
     def receive_analog_data(self):
-        data = self.serial_port.read(22)       # 10 analog values, 2 bytes per value, define as a variable ???!!!
+        data = self.comm_iface.read(22)       # 10 analog values, 2 bytes per value, define as a variable ???!!!
         return(data)
 
     def request_relay_outputs(self):
@@ -259,18 +321,22 @@ class controllino_maxi():
         relay_vals_stream = self.receive_relays_data()
         # logging.debug(relay_vals_stream)
 
-        for i in range(len(self.relays_vals)):
-            byte = relay_vals_stream[i]
-            if(byte == 0):
-                self.relays_vals[i] = False
-            else:
-                self.relays_vals[i] = True
+        try:
+            for i in range(len(self.relays_vals)):
+                byte = relay_vals_stream[i]
+                if(byte == 0):
+                    self.relays_vals[i] = False
+                else:
+                    self.relays_vals[i] = True
+        except:
+            logging.warning("Incoming data misformed")
+
 
         # there is no return values, as they get stored in class internal variables. (digital_out_vals)
         return(True)
 
     def receive_relays_data(self):
-        data = self.serial_port.read(12)  # 10 digital values + eol
+        data = self.comm_iface.read(12)  # 10 digital values + eol
         return (data)
 
 

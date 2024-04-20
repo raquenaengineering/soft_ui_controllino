@@ -6,7 +6,7 @@
 import sys
 import time
 import logging
-logging.basicConfig(level = logging.WARNING)
+logging.basicConfig(level = logging.INFO)
 
 # qt imports #
 from PyQt5.QtWidgets import (
