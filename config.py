@@ -4,7 +4,9 @@ class ui_config():
 
 class comm_config():
     comm_type = "socket"                    # serial or socket communication, ideally will also set modifications in firmware to block the other comm. method.
-    t_wait_between_request_and_read = 0.02  # time to wait after sending a data request command and reading the data
+    # Minimum time when using a wireless connection, minimum 150ms for consistent communicaion
+    # Minimum time direct conn. 18ms
+    t_wait_between_request_and_read = 0.150   # time to wait after sending a data request command and reading the data
 
 class serial_config():
 
@@ -12,7 +14,7 @@ class serial_config():
     port = "COM4"                           # use device manager to figure out the assigned port before running script.
 
 class socket_config():
-    ip = "192.168.4.128"                    # needs to be set up at the firmware side, any free ip will do
+    ip = "192.168.0.128"                    # needs to be set up at the firmware side, any free ip will do
     port = 8881                             # any free port should do, BUT: CHECK STANDARDS FOR BETTER CHOICE!
 
 

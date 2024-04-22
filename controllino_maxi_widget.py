@@ -503,6 +503,26 @@ class controllino_maxi_widget(QWidget):
         shortcut_all_off = QShortcut('<', self)
         shortcut_all_off.activated.connect(self.controllino.all_outputs_off)
 
+        # shortcut_all_off = QShortcut('º', self)
+        # shortcut_all_off.activated.connect(self.controllino.all_outputs_off)
+        #
+        # shortcut_all_off = QShortcut('1', self)
+        # shortcut_all_off.activated.connect(self.controllino.all_outputs_off)
+        #
+        # shortcut_all_off = QShortcut('2', self)
+        # shortcut_all_off.activated.connect(self.controllino.all_outputs_off)
+        #
+        # shortcut_all_off = QShortcut('3', self)
+        # shortcut_all_off.activated.connect(self.controllino.all_outputs_off)
+        #
+        # shortcut_all_off = QShortcut('4', self)
+        # shortcut_all_off.activated.connect(self.controllino.all_outputs_off)
+        #
+        # shortcut_all_off = QShortcut('5', self)
+        # shortcut_all_off.activated.connect(self.controllino.all_outputs_off)
+        #
+        # shortcut_all_off = QShortcut('6', self)
+        # shortcut_all_off.activated.connect(self.controllino.all_outputs_off)
 
 
 class MainWindow(QMainWindow):
@@ -519,7 +539,7 @@ class MainWindow(QMainWindow):
         # self.controllino_widget  = controllino_leds_widget()
         self.setCentralWidget(self.controllino_widget)
         # stylesheet, so I don't get blind with tiny characters #
-        self.setWindowTitle("CONTROLLINO WIDGET")
+        self.setWindowTitle("Raquena Engineering CONTROLLINO WIDGET")
 
         # self.controllino_pic = controllino_maxi_image_with_buttons()
         # self.setCentralWidget(self.controllino_pic)
